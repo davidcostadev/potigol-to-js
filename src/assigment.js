@@ -1,11 +1,43 @@
+const checkString = value => {
+  if (value.match(/(["]|['])/)) {
+    return value.match(/("|')(.*?)("|')/)[0]
+  }
 
-const assigmentCore = ([ name, value ]) => `${name} = ${value}`
+  return ''
+}
+
+const parseValue = value => {
+  if (value.match(/(["]|['])/)) {
+    let string = value.match(/("|')(.*?)("|')/)[2]
+
+    if (string.match(/[{]/g)) {
+      const value = string.match(/[{](.*?)[}]/)[1];
+      string = string.replace(`{${value}}`, `\${${value}}`)
+
+      return `\`${string}\``;
+    }
+    
+    return `'${string}'`;
+  }
+  
+  return value;
+}
+
+const assigmentCore = ([ name, value ]) => `${name} = ${parseValue(value)}`
 
 const assigmentConstant = (data) => `const ${assigmentCore(data)}`;
 
 const assigmentSimple = (data) => `let ${assigmentCore(data)}`;
 
 const compressLine = (line) => {
+  const separetedString = checkString(line);
+  const matches = line.match(/^(.*?)(['"].*?["'])(.*?)$/u);
+  if (matches) {
+    const newLine = [matches[1].replace(/[ ]/g, ''), matches[2], matches[3].replace(/[ ]/g, '')]
+      .filter(x => x.length).join(' ');
+
+      return newLine;
+  }
   const a = line.replace(/var /g, '').replace(/[ ]/g, '');
   return a
 }
@@ -18,7 +50,7 @@ const checkAssigment = (string) => {
     return '=';
   }
   
-  return '';
+  return null;
 }
 
 const checkTypeAssigment = (string) => {
@@ -48,4 +80,8 @@ const assigment = string => {
   }).join(';') + ';'
 }
 
-module.exports = assigment
+module.exports = {
+  checkAssigment,
+  assigment,
+  parseValue,
+}

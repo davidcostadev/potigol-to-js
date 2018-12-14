@@ -1,4 +1,11 @@
-const assigment = require('./assigment');
+const {
+  assigment,
+  checkAssigment,
+} = require('./assigment');
+const {
+  checkOutput,
+  parseEscreva,
+} = require('./output');
 
 const splitLines = string => {
   const lines = string.split('\n').filter(line => line.length);
@@ -6,8 +13,20 @@ const splitLines = string => {
   return lines
 }
 
+const checkLine = (line) => {
+  if (checkAssigment(line)) {
+    return assigment(line)
+  }
+
+  if (checkOutput(line)) {
+    return parseEscreva(line);
+  }
+
+  return line
+}
+
 const compiler = (string) => {
-  const pipe = splitLines(string).map(assigment).join('\n');
+  const pipe = splitLines(string).map(checkLine).join('\n');
   return pipe;
 }
 
