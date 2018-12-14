@@ -9,9 +9,9 @@ const compressLine = (line) => {
 
 const assigmentCore = ([ name, value ]) => `${name} = ${value}`
 
-const assigmentConstant = (data) => `const ${assigmentCore(data)};`;
+const assigmentConstant = (data) => `const ${assigmentCore(data)}`;
 
-const assigmentSimple = (data) => `let ${assigmentCore(data)};`;
+const assigmentSimple = (data) => `let ${assigmentCore(data)}`;
 
 
 const checkAssigment = (string) => {
@@ -47,8 +47,9 @@ const assigment = string => {
     if (valuesList.length === 1) {
       return assignFunction([name, valuesList[0]])
     }
+    
     return assignFunction([name, valuesList[index]])
-  }).join('')
+  }).join(';') + ';'
 }
 
 const splitLines = string => {
@@ -67,6 +68,7 @@ expect(compiler('algo = \'string\'')).toBe('const algo = \'string\';');
 expect(compiler('x, y = 20')).toBe('const x = 20;const y = 20;');
 expect(compiler('x, y = 1, 2')).toBe('const x = 1;const y = 2;');
 expect(compiler('var y := 10 ')).toBe('let y = 10;');
+expect(compiler('a, b, c := b, a, 4')).toBe('a = b;b = a;c = 4;');
 
 const twoLines = `
 y = 1
