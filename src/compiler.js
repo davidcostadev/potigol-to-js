@@ -6,6 +6,7 @@ const {
   checkOutput,
   parseEscreva,
 } = require('./output');
+const { parseComments } = require('./comments');
 
 const splitLines = string => {
   const lines = string.split('\n').filter(line => line.length);
@@ -14,13 +15,17 @@ const splitLines = string => {
 }
 
 const checkLine = (line) => {
+  
   if (checkAssigment(line)) {
     return assigment(line)
   }
-
+  
   if (checkOutput(line)) {
     return parseEscreva(line);
   }
+  
+  line = parseComments(line);
+  
 
   return line
 }
