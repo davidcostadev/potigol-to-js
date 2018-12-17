@@ -1,7 +1,15 @@
 const { checkComments, parseComments, getComment, removeComments } = require('./comments');
 
+const isString = value => value.match(/(["]|['])/);
+
+const assigmentCore = ([ name, value ]) => `${name} = ${parseValue(value)}`
+
+const assigmentConstant = (data) => `const ${assigmentCore(data)}`;
+ 
+const assigmentSimple = (data) => `let ${assigmentCore(data)}`;
+
 const checkString = value => {
-  if (value.match(/(["]|['])/)) {
+  if (isString(value)) {
     return value.match(/("|')(.*?)("|')/)[0]
   }
 
@@ -28,7 +36,7 @@ const interpolation = (string, value) => {
 }
 
 const parseValue = value => {
-  if (value.match(/(["]|['])/)) {
+  if (isString(value)) {
     let string = value.match(/("|')(.*?)("|')/)[2]
     
     if (string.match(/[{]/g)) {
@@ -54,30 +62,24 @@ const parseValue = value => {
   return value;
 }
 
-const assigmentCore = ([ name, value ]) => `${name} = ${parseValue(value)}`
-
-const assigmentConstant = (data) => `const ${assigmentCore(data)}`;
- 
-const assigmentSimple = (data) => `let ${assigmentCore(data)}`;
-
 const compressAfter = (string) => {
   if (checkComments(string)) {
     return string;
   }
   return  string.replace(/[ ]/g, '')
 }
+
 const compressAssigment = s => s.replace(/var /g, '').replace(/[ ]/g, '');
 
-
 const compressLine = (line) => {
-  const separetedString = checkString(line);
-  const matches = line.match(/^(.*?)(['"].*?["'])(.*?)(|(#(| ).*?))$/u);
-  if (matches) {
+  const matchesWithString = line.match(/^(.*?)(['"].*?["'])(.*?)(|(#(| ).*?))$/u);
+
+  if (matchesWithString) {
     const newLine = [
-        matches[1].replace(/[ ]/g, ''),
-        matches[2],
-       compressAfter(matches[3]),
-       compressAfter(matches[4]),
+        matchesWithString[1].replace(/[ ]/g, ''),
+        matchesWithString[2],
+       compressAfter(matchesWithString[3]),
+       compressAfter(matchesWithString[4]),
       ]
       .filter(x => x.length).join(' ');
 

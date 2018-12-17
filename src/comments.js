@@ -1,5 +1,3 @@
-const{ parseValue } = require('./assigment');
-
 const checkComments = line => line.match(/^.*?([#]( |).*?)$/u)
 
 const addComent = string =>  `// ${string}`;
@@ -41,7 +39,6 @@ const parseComments = (string) => {
       a = a.join('#')
       .trim()
       .replace(/#/, '// ')
-
 
     return a;
   }
