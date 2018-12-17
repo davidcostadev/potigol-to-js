@@ -1,44 +1,43 @@
-const checkComments = line => line.match(/^.*?([#]( |).*?)$/u)
+const checkComments = line => line.match(/^.*?([#]( |).*?)$/u);
 
-const addComent = string =>  `// ${string}`;
+const addComent = string => `// ${string}`;
 
-const getComment = string => {
+const getComment = (string) => {
   if (checkComments(string)) {
-    const [before, comment] = string.trim().split('#')
-  
+    const comment = string.trim().split('#')[1];
+
     return addComent(comment.trim());
   }
 
   return '';
-}
+};
 
-const removeComments = string => {
+const removeComments = (string) => {
   if (checkComments(string)) {
-    const [before, comment] = string.trim().split('#')
-  
+    const [before] = string.trim().split('#');
+
     return before.trim();
   }
 
   return '';
-}
+};
 
 const parseComments = (string) => {
   if (checkComments(string)) {
-
-    const [before, comment] = string.trim().split('#')
+    const [before, comment] = string.trim().split('#');
     let a = [
       before,
       comment.trim(),
     ]
-      .filter(s => s.length)
+      .filter(s => s.length);
 
-      if (a.length === 1) {        
-        return `// ${a}`;
-      }
-      
-      a = a.join('#')
+    if (a.length === 1) {
+      return `// ${a}`;
+    }
+
+    a = a.join('#')
       .trim()
-      .replace(/#/, '// ')
+      .replace(/#/, '// ');
 
     return a;
   }

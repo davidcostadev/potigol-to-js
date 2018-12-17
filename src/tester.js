@@ -1,5 +1,6 @@
 const expect = require('expect');
-console.log('\n\nNEW TEST\n\n')
+
+console.log('\n\nNEW TEST\n\n');
 
 const compiler = require('./compiler');
 
@@ -19,7 +20,7 @@ expect(compiler('a, b, c := b, a, 4')).toBe('a = b;b = a;c = 4;');
 const twoLines = `
 y = 1
 var x := y
-`
+`;
 
 expect(compiler(twoLines)).toBe('const y = 1;\nlet x = y;');
 
@@ -37,9 +38,9 @@ expect(compiler('#outro comentario')).toBe('// outro comentario');
 expect(compiler('x = "name"# apenas nome')).toBe('const x = \'name\'; // apenas nome');
 expect(compiler('x = 1 # declaração com comentario')).toBe('const x = 1; // declaração com comentario');
 
-console.log('all tests are passed')
+console.log('all tests are passed');
 
-console.log('####')
+console.log('####');
 console.log(compiler(`
 x = 10                 # Declaração de um valor fixo (não pode ser alterado)
 y, z = 20              # Mais de uma variável recebe o mesmo valor y = 20 e z = 20
@@ -49,5 +50,5 @@ var y := 10            # Declaração de uma variável alterável
 y := y + 2             # Atribuição de um valor a uma variável
 var a, b, c := 1, 2, 3 # Declaração paralela: var a := 1, var b := 2 e var c := 3
 a, b, c := b, a, 4     # Atribuição paralela: a := 2, b := 1 e c := 4
-`))
-console.log('####')
+`));
+console.log('####');
