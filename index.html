@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Potigol transpiler to Javascript</title>
+    <style>
+      body {
+        margin: 0;
+        color: white;
+      }
+      #columns {
+        width: 100%;
+        background: #2b2b2b;
+        height: 100vh;
+        display: flex;
+      }
+      #editor {
+        flex: 1;
+        padding: 30px;
+        font-size: 16px;
+      }
+      #output {
+        flex: 1;
+        border-left: 1px solid white;
+        padding: 30px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="columns">
+      <div id="editor">x = 10 # Declaração de um valor fixo (não pode ser alterado)
+y, z = 20 # Mais de uma variável recebe o mesmo valor y = 20 e z = 20
+a, b, c = 1, 2, 3 # Declaração paralela: a = 1, b = 2 e c = 3
+
+var y := 10 # Declaração de uma variável alterável
+y := y + 2 # Atribuição de um valor a uma variável
+var a, b, c := 1, 2, 3 # Declaração paralela: var a := 1, var b := 2 e var c := 3
+a, b, c := b, a, 4 # Atribuição paralela: a := 2, b := 1 e c := 4</div>
+      <div id="output"></div>
+    </div>
+    <script src="https://gitcdn.xyz/repo/potigol/PotigolAce/gh-pages/src-min/ace.js"></script>
+    <script>
+
+
+    </script>
+  </body>
+</html>
